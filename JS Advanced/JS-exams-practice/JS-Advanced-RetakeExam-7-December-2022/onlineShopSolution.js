@@ -73,7 +73,7 @@ class OnlineShop {
             result.push(`You sold ${this.sales.length} products today!`);
         }
         
-        result.push('Products in warehouse:');
+        result.push('Products in the warehouse:');
         this.products.forEach(el => {
             result.push(`${el.product}-${el.quantity} more left`);
         });
