@@ -8,34 +8,45 @@ class Contact {
     }
 
     get onlineStatus () {
-		return this._online;
+		return this.online;
 	}
 
-	set onlineStatus (type) {
-		this._online = type;
+	set onlineStatus (status) {
+		this.online = status;
 
-		if (this.infoDiv) {
-			this.infoDiv.className = this._online ? 'title online' : 'title';
+		if (this.title) {
+			this.title.className = this.online ? 'title online' : 'title';
 		}
 	}
+
+    _create(el, content, className) {
+        const tag = document.createElement(el);
+        tag.textContent = content;
+
+        if (className !== undefined) {
+            tag.className = className;
+        }
+        
+        return tag;
+    }
 
     render(id) {
         const main = document.getElementById(id);
         const article = document.createElement('article');
         const title = document.createElement('div');
-        title.classList.add('title');
+        title.className = this.online ? 'title online' : 'title';
         title.textContent = `${this.firstName} ${this.lastName}`;
-        const button = document.createElement('button');
-        button.textContent = '&#8505;';
+
+        const button = this._create('button', '&#8505;');
         button.addEventListener('click', reveal);
         title.appendChild(button);
-        const infoDiv = document.createElement('div');
-        infoDiv.classList.add('info');
+
+        const infoDiv = this._create('div', '', 'info');
         infoDiv.style.display = 'none';
-        const spanPhone = document.createElement('span');
-        spanPhone.textContent = `&phone; ${this.phone}`;
-        const spanEmail = document.createElement('span');
-        spanEmail.textContent = `&#9993; ${this.email}`;
+        
+        const spanPhone = this._create('span', `&phone; ${this.phone}`);
+        const spanEmail = this._create('span', `&#9993; ${this.email}`);
+        
         infoDiv.appendChild(spanPhone);
         infoDiv.appendChild(spanEmail);
         article.appendChild(title);
