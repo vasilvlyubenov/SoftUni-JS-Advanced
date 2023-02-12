@@ -59,3 +59,8 @@ const motorcycleRider = {
 
   }
 };
+
+
+
+
+module.exports = motorcycleRider;
