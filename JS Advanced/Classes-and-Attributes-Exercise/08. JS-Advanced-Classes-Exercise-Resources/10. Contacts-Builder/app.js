@@ -5,17 +5,18 @@ class Contact {
         this.phone = phone;
         this.email = email;
         this.online = false;
+        this.title = '';
     }
 
-    get onlineStatus () {
-		return this.online;
+    get online () {
+		return this._online;
 	}
 
-	set onlineStatus (status) {
-		this.online = status;
+	set online (status) {
+		this._online = status;
 
 		if (this.title) {
-			this.title.className = this.online ? 'title online' : 'title';
+			this.title.className = this._online ? 'title online' : 'title';
 		}
 	}
 
@@ -33,13 +34,13 @@ class Contact {
     render(id) {
         const main = document.getElementById(id);
         const article = document.createElement('article');
-        const title = document.createElement('div');
-        title.className = this.online ? 'title online' : 'title';
-        title.textContent = `${this.firstName} ${this.lastName}`;
+        this.title = document.createElement('div');
+        this.title.className = this.online ? 'title online' : 'title';
+        this.title.textContent = `${this.firstName} ${this.lastName}`;
 
         const button = this._create('button', '&#8505;');
         button.addEventListener('click', reveal);
-        title.appendChild(button);
+        this.title.appendChild(button);
 
         const infoDiv = this._create('div', '', 'info');
         infoDiv.style.display = 'none';
@@ -49,7 +50,7 @@ class Contact {
         
         infoDiv.appendChild(spanPhone);
         infoDiv.appendChild(spanEmail);
-        article.appendChild(title);
+        article.appendChild(this.title);
         article.appendChild(infoDiv);
         main.appendChild(article);
 

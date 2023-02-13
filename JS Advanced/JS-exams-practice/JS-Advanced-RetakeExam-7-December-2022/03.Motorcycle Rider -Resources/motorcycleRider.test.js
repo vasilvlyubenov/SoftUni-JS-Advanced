@@ -71,7 +71,7 @@ describe('Motorcycle Rider tests', function () {
             expect(motorcycleRider.otherSpendings(['helmet', 'helmet'], ['oil filter', 'oil filter'], false)).to.equal('You spend $460.00 for equipment and consumables!');
         });
         it('Valid input with discount', () => {
-            expect(motorcycleRider.otherSpendings(['helmet', 'helmet'], ['oil filter', 'oil filter'], true)).to.equal('You spend $414.00 for equipment and consumables with 10% discount!');
+            expect(motorcycleRider.otherSpendings(['jacked', 'helmet'], ['oil filter', 'oil filter'], true)).to.equal('You spend $504.00 for equipment and consumables with 10% discount!');
         });
         it('Empty equipment without discount', () => {
             expect(motorcycleRider.otherSpendings([], ['oil filter', 'oil filter'], false)).to.equal('You spend $60.00 for equipment and consumables!');
