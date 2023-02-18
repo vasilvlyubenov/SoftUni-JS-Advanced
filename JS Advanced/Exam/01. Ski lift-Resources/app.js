@@ -89,7 +89,7 @@ function solve() {
         }
     }
 
-    function createElement(tag, content, className, idName) {
+    function createElement(tag, content, className) {
         const el = document.createElement(tag);
 
         if (content) {
