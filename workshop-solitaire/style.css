@@ -1,0 +1,72 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background-color: green;
+}
+#board {
+    width: 600px;
+}
+
+.clearfix::after {
+    display: table;
+    content: '';
+    clear: both;
+}
+
+.deck {
+    border: 1px solid black;
+    background-color: antiquewhite;
+    display: inline-block;
+    min-width: 80px;
+    min-height: 105px;
+    padding: 15px;
+    vertical-align: top;
+}
+
+#stock {
+    float: left;
+}
+
+#foundation {
+    float: right;
+}
+
+#pile {
+    margin-top: 50px;
+}
+
+.card {
+    width: 50px;
+    height: 20px;
+    display: block;
+    border: 1px solid black;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom: none;
+    padding: 5px;
+    background-color: white;
+}
+
+.back {
+    background-color:cadetblue;
+}
+
+.red {
+    color: red;
+}
+
+.black {
+    color: black;
+}
+
+.card.top {
+    height: 75px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+#stock .card:not(.top){
+    height: 2px;
+}
