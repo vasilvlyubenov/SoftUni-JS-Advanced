@@ -52,7 +52,7 @@ export class Card {
 
 export class Deck {
     /**@type {Card[]} */
-    cards = null;
+    cards = [];
 
     /**@param {Card[]?} cards */
     constructor(cards = []) {
@@ -85,7 +85,7 @@ export class Deck {
     }
 
     flip() {
-        if (this.canFlip === false) {
+        if (this.canFlip() === false) {
             return new Error('Cannot flip card.');
         }
         this.top.faceUp = true;
@@ -95,7 +95,7 @@ export class Deck {
         if (this.canTake(index) === false) {
             throw new Error('Cannot take card.');
         }
-        this.cards.splice(index, this.size - index);
+        return this.cards.splice(index, this.size - index);
     }
 
     /**
@@ -103,20 +103,24 @@ export class Deck {
      * @param {Card | Card[]} cards 
      */
     place(cards) {
-        if (this.canPlace(index) === false) {
+        if (this.canPlace(cards) === false) {
             throw new Error('Cannot place cards.');
         }
 
-        if (!Array.isArray(cards)) {
+        if (Array.isArray(cards) === false) {
             cards = [cards];
         }
 
-        this.cards.push(...cards);
+        return this.cards.push(...cards);
     }
 
 }
 
 export class Stock extends Deck {
+    canFlip() {
+        return true;
+    }
+    
     canTake(index) {
         return false;
     }
@@ -156,15 +160,20 @@ export class Foundation extends Deck {
         return this.size > 0 && index === this.topIndex;
     }
 
-    /**@param {Card | Card[]} */
+    /**
+     * 
+     * @param {Card | Card[]} cards
+    */
     canPlace(cards) {
-        if (!Array.isArray(cards)) {
+        if (!cards || (Array.isArray(cards) && cards.length > 1)) {
             return false;
         }
+        
+        const card = Array.isArray(cards) ? cards[0] : cards;
 
-        return (cards.suit === this.suit &&
-            ((cards.face === faces.Ace && this.size === 0) ||
-                (this.size > 0 && (cards.face - 1) === this.top.face)));
+        return (card.suit == this.suit &&
+            ((card.face == faces.Ace && this.size == 0)
+                || (this.size > 0 && (card.face - 1) == this.top.face)));
     }
 }
 
@@ -179,14 +188,17 @@ export class Pile extends Deck {
      * 
      */
     canPlace(cards) {
-        if (!Array.isArray(cards)) {
+        if (!cards) {
+            return false;
+        }
+        if (Array.isArray(cards) === false) {
             cards = [cards];
         }
         /**@type {Card} */
         const bottomCard = cards[0];
 
-        return (bottomCard.face === faces.King && this.size === 0)
-                || (this.size > 0 && (bottomCard.face + 1) === this.top.face 
+        return ((bottomCard.face === faces.King && this.size === 0)
+                || (this.size > 0 && (bottomCard.face + 1) === this.top.face)
                 && colors[bottomCard.suit] !== colors[this.top.suit]);
     }
 }

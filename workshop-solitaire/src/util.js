@@ -77,7 +77,19 @@ export function dealDeck(deck) {
             index[12]
         ],
     }
-
+    //easy win
+    // let counter = 0;
+    // for (let suit of Object.values(suits)) {
+    //     for (let face of Object.values(faces)) {
+    //         counter++;
+    //         if (counter === 52) {
+    //             break;
+    //         }
+    //         state.foundations[suit].cards.push(deck.cards.shift());
+    //         state.foundations[suit].top.faceUp = true;
+    //     }
+    // }
+ 
     for (let i = 0; i < 7; i++) {
         const pile = state.piles[i];
 
@@ -89,10 +101,8 @@ export function dealDeck(deck) {
     }
 
     state.stock.cards.push(...deck.cards);
-    return {
-        index,
-        state
-    };
+    console.log(state);
+    return [ index, state];
 }
 
 /**

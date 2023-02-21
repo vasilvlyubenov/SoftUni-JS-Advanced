@@ -47,6 +47,7 @@ html {
     border-bottom: none;
     padding: 5px;
     background-color: white;
+    user-select: none;
 }
 
 .back {
@@ -67,6 +68,11 @@ html {
     border-radius: 5px;
 }
 
-#stock .card:not(.top){
+#stock .card:not(.top), #foundation .card:not(.top) {
     height: 2px;
+}
+
+.active:hover, .active:hover .back {
+    cursor: pointer;
+    background-color: aquamarine;
 }
