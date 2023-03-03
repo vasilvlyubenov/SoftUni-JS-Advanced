@@ -110,7 +110,7 @@ describe('E2E tests', function () {
       expect(postData.title).to.equal(data.title + '1');
       expect(postData.author).to.equal(data.author + '1');
     });
-
+debugger
     it('Edit should populate form with correct data', async () => {
       const info = mockData.catalog;
       const data = mockData.catalog[0];
