@@ -1,9 +1,5 @@
-const {
-  chromium
-} = require('playwright-chromium');
-const {
-  expect
-} = require('chai');
+const { chromium } = require('playwright-chromium');
+const { expect } = require('chai');
 
 const host = 'http://localhost:3000'; // Application host (NOT service host - that can be anything)
 
@@ -12,7 +8,8 @@ const DEBUG = false;
 const slowMo = 500;
 
 const mockData = {
-  users: [{
+  users: [
+    {
       _id: '0001',
       email: 'peter@abv.bg',
       password: '123456',
@@ -25,7 +22,8 @@ const mockData = {
       accessToken: 'BBBB',
     },
   ],
-  catalog: [{
+  catalog: [
+    {
       angler: 'Paulo Admorim',
       weight: '636',
       species: 'Atlantic Blue Marlin',
@@ -66,10 +64,7 @@ describe('E2E tests', function () {
   before(
     async () =>
       (browser = await chromium.launch(
-        DEBUG ? {
-          headless: false,
-          slowMo
-        } : {}
+        DEBUG ? { headless: false, slowMo } : {}
       ))
   );
   after(async () => await browser.close());
@@ -85,9 +80,7 @@ describe('E2E tests', function () {
   // Test proper
   describe('Authentication', () => {
     it('register does not work with empty fields', async () => {
-      const {
-        post
-      } = await handle(endpoints.register);
+      const { post } = await handle(endpoints.register);
       const isCalled = post().isHandled;
 
       await page.goto(host);
@@ -103,12 +96,8 @@ describe('E2E tests', function () {
 
     it('register makes correct API call', async () => {
       const data = mockData.users[0];
-      const {
-        post
-      } = await handle(endpoints.register);
-      const {
-        onRequest
-      } = post(data);
+      const { post } = await handle(endpoints.register);
+      const { onRequest } = post(data);
 
       await page.goto(host);
       await page.waitForSelector('#register');
@@ -134,12 +123,8 @@ describe('E2E tests', function () {
 
     it('login makes correct API call', async () => {
       const data = mockData.users[0];
-      const {
-        post
-      } = await handle(endpoints.login);
-      const {
-        onRequest
-      } = post(data);
+      const { post } = await handle(endpoints.login);
+      const { onRequest } = post(data);
 
       await page.goto(host);
       await page.waitForSelector('#login');
@@ -163,21 +148,10 @@ describe('E2E tests', function () {
 
     it('logout makes correct API call', async () => {
       const data = mockData.users[0];
-      const {
-        post
-      } = await handle(endpoints.login);
-      const {
-        get
-      } = await handle(endpoints.logout);
-      const {
-        onResponse
-      } = post(data);
-      const {
-        onRequest
-      } = get('', {
-        json: false,
-        status: 204
-      });
+      const { post } = await handle(endpoints.login);
+      const { get } = await handle(endpoints.logout);
+      const { onResponse } = post(data);
+      const { onRequest } = get('', { json: false, status: 204 });
 
       await page.goto(host);
       await page.click('text=Login');
@@ -235,9 +209,7 @@ describe('E2E tests', function () {
   describe('Catalog', () => {
     it('load catches', async () => {
       const data = mockData.catalog;
-      const {
-        get
-      } = await handle(endpoints.catalog);
+      const { get } = await handle(endpoints.catalog);
       get(data);
       await page.goto(host);
 
@@ -255,9 +227,7 @@ describe('E2E tests', function () {
 
     it('before load catches', async () => {
       const data = mockData.catalog;
-      const {
-        get
-      } = await handle(endpoints.catalog);
+      const { get } = await handle(endpoints.catalog);
       get(data);
       await page.goto(host);
 
@@ -287,9 +257,7 @@ describe('E2E tests', function () {
 
     it('create does NOT work with empty fields', async () => {
       await loginUser();
-      const {
-        post
-      } = await handle(endpoints.create);
+      const { post } = await handle(endpoints.create);
       const isCalled = post().isHandled;
 
       await page.waitForSelector('#addForm');
@@ -301,12 +269,8 @@ describe('E2E tests', function () {
     it('create makes correct API call for logged in user', async () => {
       await loginUser();
       const data = mockData.catalog[0];
-      const {
-        post
-      } = await handle(endpoints.catalog);
-      const {
-        onRequest
-      } = post();
+      const { post } = await handle(endpoints.catalog);
+      const { onRequest } = post();
 
       await page.waitForSelector('#addForm');
       await page.fill('[name="angler"]', data.angler);
@@ -334,9 +298,7 @@ describe('E2E tests', function () {
     it("non-author can't click on other post", async () => {
       await loginUser();
       const data = mockData.catalog[1];
-      const {
-        get
-      } = await handle(endpoints.catalog);
+      const { get } = await handle(endpoints.catalog);
       get(data);
 
       await page.click('.load');
@@ -348,16 +310,14 @@ describe('E2E tests', function () {
           return true;
         }
       });
-
+      
       expect(result.length).to.be.equals(2);
     });
 
     it('author can click on other post', async () => {
       await loginUser();
       const data = mockData.catalog[0];
-      const {
-        get
-      } = await handle(endpoints.catalog);
+      const { get } = await handle(endpoints.catalog);
       get(data);
 
       await page.click('.load');
@@ -377,14 +337,9 @@ describe('E2E tests', function () {
       await loginUser();
       const data = mockData.catalog[0];
       await page.goto(host);
-      const {
-        get,
-        put
-      } = await handle(endpoints.details(data._id));
+      const { get, put } = await handle(endpoints.details(data._id));
       get(data);
-      const {
-        onRequest
-      } = put();
+      const { onRequest } = put();
       await page.waitForSelector('.load');
 
       await page.click('.load');
@@ -403,15 +358,8 @@ describe('E2E tests', function () {
       await loginUser();
       const data = mockData.catalog[0];
       await page.goto(host);
-      const {
-        del
-      } = await handle(endpoints.details(data._id));
-      const {
-        onResponse,
-        isHandled
-      } = del({
-        id: data._id
-      });
+      const { del } = await handle(endpoints.details(data._id));
+      const { onResponse, isHandled } = del({ id: data._id });
 
       await page.click('.load');
       await page.waitForSelector('.delete');
@@ -425,23 +373,14 @@ describe('E2E tests', function () {
 
 async function setupContext(context) {
   // Authentication
-  await handleContext(context, endpoints.login, {
-    post: mockData.users[0]
-  });
-  await handleContext(context, endpoints.register, {
-    post: mockData.users[0]
-  });
+  await handleContext(context, endpoints.login, { post: mockData.users[0] });
+  await handleContext(context, endpoints.register, { post: mockData.users[0] });
   await handleContext(context, endpoints.logout, {
-    get: (h) => h('', {
-      json: false,
-      status: 204
-    }),
+    get: (h) => h('', { json: false, status: 204 }),
   });
 
   // Catalog and Details
-  await handleContext(context, endpoints.catalog, {
-    get: mockData.catalog
-  });
+  await handleContext(context, endpoints.catalog, { get: mockData.catalog });
   await handleContext(context, endpoints.details('1001'), {
     get: mockData.catalog[0],
   });
@@ -535,7 +474,8 @@ async function handleRaw(match, handlers) {
 }
 
 function respond(data, options = {}) {
-  options = Object.assign({
+  options = Object.assign(
+    {
       json: true,
       status: 200,
     },
