@@ -17,7 +17,7 @@ const addFormTemplate = () => html`
     </form>`;
 
    export function addForm() {
-    render(addFormTemplate(), document.querySelector('body'));
+    render(addFormTemplate(), document.querySelector('#form-container'));
     document.getElementById('add-form').addEventListener('submit', postData);
    }
 
@@ -27,7 +27,13 @@ const addFormTemplate = () => html`
 
     const input = new FormData(event.target);
     const data = Object.fromEntries(input.entries());
+
+    if (data.title === '' || data.author === '') {
+        return alert('All fields must be filled!');
+    }
     
     await addData(data);
+    document.getElementById('add-form').reset();
     populate();
+
    }

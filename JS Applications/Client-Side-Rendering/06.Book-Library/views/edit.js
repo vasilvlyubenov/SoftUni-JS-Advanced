@@ -19,7 +19,7 @@ const editTemplate = () => html`
 
     export function showEdit(id, author, title) {
         document.querySelector('#add-form').remove();
-        render(editTemplate(), document.querySelector('body'));
+        render(editTemplate(), document.querySelector('#form-container'));
         document.querySelector('input[name=title]').value = title;
         document.querySelector('input[name=author]').value = author;
         document.getElementById('edit-form').addEventListener('submit', (e) => {editInfo(e, id)});
@@ -27,12 +27,11 @@ const editTemplate = () => html`
 
     async function editInfo(event, targetId) {
         event.preventDefault();
-        debugger
+      
         const input = new FormData(event.target);
         const {id, title, author} = Object.fromEntries(input);
-
-        await updateData(targetId, {title, author})
+        
+        await updateData(targetId, {title, author});
         populate();
         addForm();
-        
     }
